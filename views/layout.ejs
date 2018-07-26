@@ -6,29 +6,43 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Quiz</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" 
+        type="text/css"
+        media='only screen and (min-width: 800px) and (min-device-width: 600px)' 
+        href="/stylesheets/wide.css" />
+    <link rel="stylesheet" 
+        type= "text/css"
+        media= 'only screen and (max-width: 480px)' 
+        href="/stylesheets/smartphone.css" />
 </head>
 <body>
-    <header>
-        <h2>The Quiz Site</h2>
-    </header>
-    
-    <nav>
-        <a href="/">Home</a>
-        <a href="/author">Author</a>
-    </nav>
+    <div id="page">
+        <header class="main" id="mainHeader">
+            <h1><span class="no-narrow"The</span>
+                Quiz
+                <span class="no-narrow"Site</span>
+            </h1>
+        </header>
+         
+        <nav class="main" id="mainNav" role="navigation"> 
+            <a href="/">Home</a>
+            <a href="/author">Author</a>
+        </nav>
 
-    <section>
-        <div>
-            <%- body %>
-        </div>
-    </section>
+        <section class="main" id="mainSection">
+            <div>
+                <%- body %>
+            </div>
+        </section>
 
-    <footer>
-        <a href="http://en/wikipedia.org/wiki/quiz">
-            What is a Quiz
-        </a>
-    </footer>
+        <footer class="main" id="mainFooter">
+            <a href="http://en/wikipedia.org/wiki/quiz">
+                What is a Quiz
+            </a>
+        </footer>
+    </div>
     
 </body>
 </html>
