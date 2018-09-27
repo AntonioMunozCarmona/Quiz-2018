@@ -13,6 +13,11 @@ router.get('/author', function(req, res, next) {
   res.render('author', { nombre: 'Antonio', ape: 'Muñoz' });
 });
 
+// Autoload para las routes usando :quizId (para que se pase como
+// una variable mas y en todas las rutas que llevan :quizID lo pasará 
+// al controlador como una variable mas)
+router.param('quizId', quizController.load);
+
 // Routes for the resource /quizzes
 router.get('/quizzes', quizController.index);
 router.get('/quizzes/:quizId(\\d+)', quizController.show);

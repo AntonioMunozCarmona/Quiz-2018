@@ -1,5 +1,19 @@
 const models = require('../models');
 
+// Autoload de el quiz asociado a :quizId
+// De esta forma se busca el quiz y se autocarga
+// Para simplificar el resto de controladores
+exports.load = (req, res, next, quizId) => {
+  const quiz = models.quiz.findById(Number(quizId));
+
+  if ( quiz ) {
+    req.quiz = quiz;
+    next();
+  } else {
+    throw new Error(`No hay Quiz con Número de ID: ${quizId}`);
+  }
+};
+
 // GET /quizzes
 exports.index = (req, res, next) => {
   const quizzes = models.quiz.findAll();
@@ -9,14 +23,10 @@ exports.index = (req, res, next) => {
 
 // GET /quizzes/:quizId
 exports.show = (req, res, next) => {
-  const quizId = Number(req.params.quizId);
-  const quiz = models.quiz.findById(quizId);
+  
+  const {quiz} = req;
 
-  if ( quiz ) {
-    res.render('quizzes/show', {quiz});
-  } else {
-    next(new Error(`There is no quiz with id=${quiz}`));
-  }
+  res.render('quizzes/show', {quiz});
 };
 
 // GET /quizzes/new
@@ -48,81 +58,57 @@ exports.create = (req, res, next) => {
 
 // GET /quizzes/:quizId/edit
 exports.edit = (req, res, next) => {
-  const quizId = Number(req.params.quizId);
-  const quiz = models.quiz.findById(quizId);
+  
+  const {quiz} = req;
 
-  if (quiz) {
-    res.render('quizzes/edit', {quiz});
-  } else {
-    next(new Error(`There is no quiz with id=${quizId}`));
-  }
+  res.render('quizzes/edit', {quiz});
 };
 
 // PUT /quizzes/:quizId
 exports.update = (req, res, next) => {
-  const quizId = Number(req.params.quizId);
-  const quiz = models.quiz.findById(quizId);
+  
+  const {quiz, body} = req;
 
-  if ( quiz) {
-    quiz.question = req.body.question;
-    quiz.answer = req.body.answer;
+  quiz.question = body.question;
+  quiz.answer = body.answer;
 
-    models.quiz.update(quiz);
-    res.redirect('/quizzes');
-  } else {
-    next(new Error(`There is no quiz with id=${quizId}`));
-  }
+  models.quiz.update(quiz);
+    
+  // res.redirect('/quizzes');
+  res.render('quizzes/show', {quiz});
 };
 
 // DELETE /quizzes/:quizId
 exports.destroy = (req, res, next) => {
-  const quizId = Number(req.params.quizId);
+  
+  models.quiz.destroy(req.quiz);
 
-  const quiz = models.quiz.findById(quizId);
-
-  if ( quiz ) {
-    models.quiz.destroy(quiz);
-
-    res.redirect('/quizzes');
-  } else {
-    next(new Error(`There is no quiz with id=${quizId}`));
-  }
+  res.redirect('/quizzes');
 };
 
 // GET /quizzes/play
 exports.play = (req, res, next) => {
-  const answer = req.query.answer || '';
 
-  const quizId = Number(req.params.quizId);
-  const quiz = models.quiz.findById(quizId);
+  const {quiz, query} = req;
+  const answer = query.answer || '';
 
-  if (quiz) {
-    res.render('quizzes/play', {
-      quiz: quiz,
-      answer: answer
-    });
-  } else {
-    next(new Error(`There is no quiz with id=${quizId}`));
-  }
-
+  res.render('quizzes/play', {
+    quiz: quiz,
+    answer: answer
+  });
 };
 
 // GET /quizzes/:quizId/check
 exports.check = (req, res, next) => {
-  const answer = req.query.answer || '';
-
-  const quizId = Number(req.params.quizId);
-  const quiz = models.quiz.findById(quizId);
+  
+  const {quiz, query} = req;
+  const answer = query.answer || '';
 
   const result = answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim();
 
-  if (quiz) {
-    res.render('quizzes/result', {
-      quiz: quiz,
-      result: result,
-      answer: answer
-    });
-  } else {
-    next(new Error(`There is no quiz with ID= ${quizId}`));
-  }
+  res.render('quizzes/result', {
+    quiz: quiz,
+    result: result,
+    answer: answer
+  });
 };
