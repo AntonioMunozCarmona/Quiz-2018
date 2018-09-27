@@ -74,3 +74,8 @@ typings/
 
 # Mis notas
 .Para_mi
+
+# Configuración del editor
+.editorconfig
+.eslintrc
+.vscode/
