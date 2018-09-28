@@ -16,11 +16,13 @@
     "cookie-parser": "^1.4.3",
     "debug": "^2.6.9",
     "ejs": "^2.5.7",
-    "express": "^4.15.5",
+    "express": "^4.16.3",
     "express-partials": "^0.3.0",
     "method-override": "^3.0.0",
     "morgan": "^1.9.0",
+    "sequelize": "^4.39.0",
     "serve-favicon": "^2.4.5",
+    "sqlite3": "^4.0.2",
     "supervisor": "^0.12.0"
   }
 }

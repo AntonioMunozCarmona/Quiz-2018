@@ -79,3 +79,6 @@ typings/
 .editorconfig
 .eslintrc
 .vscode/
+
+# La base de datos de desarrollo
+quiz.sqlite
