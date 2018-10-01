@@ -22,9 +22,9 @@
 <body>
     <div id="page">
         <header class="main" id="mainHeader">
-            <h1><span class="no-narrow"The</span>
+            <h1><span class="no-narrow">The</span>
                 Quiz
-                <span class="no-narrow"Site</span>
+                <span class="no-narrow">Site</span>
             </h1>
         </header>
          
@@ -35,6 +35,38 @@
         </nav>
 
         <section class="main" id="mainSection">
+
+            <% if (messages.info) { %>
+                <article id="flashinfo">
+                    <h3>Información de Interes</h3>
+                    <ul>
+                        <% for (var i in messages.info) { %>
+                            <li><%= messages.info[i] %></li>
+                        <% } %>
+                    </ul>
+                </article>
+            <% } %>
+            <% if (messages.success) { %>
+                <article id="flashsuccess">
+                    <h3>Tareas Completadas Satisfactoriamente</h3>
+                    <ul>
+                        <% for (var i in messages.success) { %>
+                            <li><%= messages.success[i] %></li>
+                        <% } %>
+                    </ul>
+                </article>
+            <% } %>
+            <% if (messages.error) { %>
+                <article id="flashinfo">
+                    <h3>Información sobre Errores</h3>
+                    <ul>
+                        <% for (var i in messages.error) { %>
+                            <li><%= messages.error[i] %></li>
+                        <% } %>
+                    </ul>
+                </article>
+            <% } %>
+
             <div>
                 <%- body %>
             </div>

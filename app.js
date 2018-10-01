@@ -4,13 +4,26 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var SequelizeStore = require('connect-session-sequelize')(session.Store);
 var partials = require('express-partials');
+var flash = require('express-flash');
 var methodOverride = require('method-override');
 
+// Rutas
 var routes = require('./routes/index');
 // var users = require('./routes/users');
 
 var app = express();
+
+// Configuración de Session para ser almacenada en DB con Sequelize
+var sequelize = require('./models');
+var sessionStore = new SequelizeStore({
+  db: sequelize,
+  table: 'session',
+  checkExpirationInterval: 15 * 60 * 1000,  // Limpia las sesiones expiradas cada 15 minutos
+  expiration: 4 *60 * 60 *1000  // 4 horas de duracion máxima de sessión
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,9 +35,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Uso de la session
+app.use(session({
+  secret: 'el secreto de la pirámide',
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: true
+}));
+
 app.use(methodOverride('_method',{methods: ['POST', 'GET']}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
+app.use(flash());
 
 app.use('/', routes);
 // app.use('/users', users); La creo express pero no la usaremos

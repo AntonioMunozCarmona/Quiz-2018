@@ -55,13 +55,19 @@ exports.create = (req, res, next) => {
 
   // Salva solo los campos question y answer en la BBDD
   quiz.save({fields: ['question', 'answer']})
-    .then( quiz => res.redirect(`/quizzes/${quiz.id}`))
+    .then( quiz => {
+      req.flash('success', 'Quiz creado satisfactoriamente');
+      res.redirect(`/quizzes/${quiz.id}`);
+    })
     .catch(Sequelize.ValidationError, error => {
-      console.log('Hay errores en el formulario');
-      error.errors.forEach(({message}) => console.log(message));
+      req.flash('error', 'Hay errores en el formulario');
+      error.errors.forEach(({message}) => req.flash('error', message));
       res.render('quizzes/new', {quiz});
     })
-    .catch( error => next(error));
+    .catch( error => {
+      req.flash('error', 'Error creando un nuevo Quiz' + error.message);
+      next(error);
+    });
 };
 
 // GET /quizzes/:quizId/edit
@@ -83,21 +89,33 @@ exports.update = (req, res, next) => {
   quiz.save({fields: ['question', 'answer']})
   // Podríamos mandar al listado general o listar solo el quiz
   // res.redirect('/quizzes'); 
-    .then( quiz => res.render('quizzes/show', {quiz} ))
+    .then( quiz => {
+      req.flash('success', 'Quiz Editado Satisfactoriamente');
+      res.render('quizzes/show', {quiz} );
+    })
     .catch(Sequelize.ValidationError, error => {
-      console.log('Hay errores en el formulario');
-      error.errors.forEach(( {message}) => console.log(message));
+      req.flash('error', 'Hay errores en el formulario');
+      error.errors.forEach(( {message}) => req.flash('error', message));
       res.render('quizzes/edit',{quiz});     
     })
-    .catch( error => next(error));
+    .catch( error => {
+      req.flash('error', 'Error editando el Quiz' + error.message);
+      next(error);
+    });
 };
 
 // DELETE /quizzes/:quizId
 exports.destroy = (req, res, next) => {
   
   req.quiz.destroy()
-    .then(() => res.redirect('/quizzes'))
-    .catch(error => next(error));
+    .then(() => {
+      req.flash('success', 'Quiz borrado satisfactoriamente');
+      res.redirect('/quizzes');
+    })
+    .catch(error => {
+      req.flash('Error', `Error borrando el Quiz &{error.message}`);
+      next(error);
+    });
 };
 
 // GET /quizzes/play
