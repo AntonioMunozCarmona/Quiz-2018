@@ -23,9 +23,12 @@
     "express-session": "^1.15.6",
     "method-override": "^3.0.0",
     "morgan": "^1.9.0",
+    "pg": "^7.4.3",
     "sequelize": "^4.39.0",
     "serve-favicon": "^2.4.5",
-    "sqlite3": "^4.0.2",
     "supervisor": "^0.12.0"
+  },
+  "devDependencies": {
+    "sqlite3": "^4.0.2"
   }
 }
