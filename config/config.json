@@ -1,0 +1,16 @@
+// {
+//  "development": {
+//     "storage": "quiz.sqlite",
+//     "dialect": "sqlite"
+//   },
+//   "test": {
+    
+//   },
+//   "production": {
+//     "dialect":"postgres",
+//     "ssl": true,
+//     "dialectOptions": {
+//         "ssl": true
+//     }
+//   }
+// }

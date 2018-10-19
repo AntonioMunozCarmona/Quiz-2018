@@ -16,12 +16,12 @@ sequelize.import(path.join(__dirname, 'quiz'));
 sequelize.import(path.join(__dirname, 'session'));
 
 // Crear tablas
-sequelize.sync()
-    .then(() => console.log('DataBases creadas satisfactoriamente'))
-    .catch( error => {
-      console.log('Error creando las tablas de la Base de Datos', error);
-      process.exit(1);
+// sequelize.sync()
+//     .then(() => console.log('DataBases creadas satisfactoriamente'))
+//     .catch( error => {
+//       console.log('Error creando las tablas de la Base de Datos', error);
+//       process.exit(1);
         
-    });
+//     });
 
 module.exports = sequelize;
