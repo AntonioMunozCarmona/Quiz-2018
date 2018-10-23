@@ -8,7 +8,7 @@ const paginate = require('../helpers/paginate').paginate;
 // De esta forma se busca el quiz y se autocarga
 // Para simplificar el resto de controladores
 exports.load = (req, res, next, quizId) => {
-  models.quiz.findById(Number(quizId))
+  models.quiz.findById(Number(quizId), {include: [models.tip] })
     .then( quiz => {
       if ( quiz ) {
         req.quiz = quiz;

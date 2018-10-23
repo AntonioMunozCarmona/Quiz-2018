@@ -12,6 +12,9 @@ const sequelize = new Sequelize(url);
 // Para importar la definición de la tabla quiz desde quiz.js
 sequelize.import(path.join(__dirname, 'quiz'));
 
+// Para importar la definición de la tabla de Tips desde tip.js
+sequelize.import(path.join(__dirname, 'tip'));
+
 // Session
 sequelize.import(path.join(__dirname, 'session'));
 
@@ -23,5 +26,10 @@ sequelize.import(path.join(__dirname, 'session'));
 //       process.exit(1);
         
 //     });
+
+const { quiz, tip} = sequelize.models;
+
+tip.belongsTo(quiz);
+quiz.hasMany(tip);
 
 module.exports = sequelize;
