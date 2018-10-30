@@ -15,6 +15,9 @@ sequelize.import(path.join(__dirname, 'quiz'));
 // Para importar la definición de la tabla de Tips desde tip.js
 sequelize.import(path.join(__dirname, 'tip'));
 
+// Importar la definicion (el modelo) de user desde user.js
+sequelize.import(path.join(__dirname, 'user'));
+
 // Session
 sequelize.import(path.join(__dirname, 'session'));
 

@@ -9,20 +9,35 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    return queryInterface.createTable('tips', {
+    return queryInterface.createTable('users', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true, 
+        autoIncrement: true,
         unique: true
       },
-      quizId: {
-        type: Sequelize.INTEGER
-      },
-      text: {
+      username: {
         type: Sequelize.STRING,
-        validate: { notEmpty: { msg: 'Tip text must not be empty'}}
+        unique: true,
+        validate: {
+          notEmpty: true,
+          msg: 'Username must not be empty'
+        }
+      },
+      password: {
+        type: Sequelize.STRING,
+        validate: {
+          notEmpty: true,
+          msg: 'Username must not be empty'
+        }
+      },
+      salt: {
+        type: Sequelize.STRING
+      },
+      isAdmin: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -43,6 +58,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    return queryInterface.dropTable('tips');
+    return queryInterface.dropTable('users');
   }
 };
