@@ -4,6 +4,10 @@ var router = express.Router();
 const quizController = require('../controllers/quiz');
 const tipController = require('../controllers/tip');
 const userController = require('../controllers/user');
+const sessionController = require('../controllers/session');
+
+/* Auto logout */
+router.all('*', sessionController.deleteExpiredUserSession);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -20,6 +24,11 @@ router.get('/author', function(req, res, next) {
 // al controlador como una variable mas)
 router.param('quizId', quizController.load);
 router.param('userId', userController.load);
+
+// Rutas de Sessión
+router.get('/session', sessionController.new);        // Formulario de Login
+router.post('/session', sessionController.create);    // Crear session
+router.delete('/session', sessionController.destroy); // Cerrar sessión
 
 // Rutas para el recurso /users
 router.get('/users', userController.index);

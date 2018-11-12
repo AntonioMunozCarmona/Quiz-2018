@@ -49,6 +49,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
 app.use(flash());
 
+// Dynamic Helper
+app.use(function (req, res, next) {
+  // Para usar req.session en las vistas
+  res.locals.session = req.session;
+  next();
+});
+
 app.use('/', routes);
 // app.use('/users', users); La creo express pero no la usaremos
 

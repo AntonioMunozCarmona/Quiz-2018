@@ -2,7 +2,7 @@ const crypt = require('../helpers/crypt');
 
 // Definición del modelo de usuario
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define(
+  const User = sequelize.define(
     'user', {
       username: {
         type: DataTypes.STRING,
@@ -11,10 +11,10 @@ module.exports = function (sequelize, DataTypes) {
       },
       password: {
         type: DataTypes.STRING,
-        validate: {notEmpty: {msg: "Username must not be empty."}},
+        validate: {notEmpty: {msg: 'Username must not be empty.'}},
         set(password) {
           // Random string used with salt
-          this.salt = Math.round(new Date().valueOf() * Math.random()) +'';
+          this.salt = Math.round(new Date().valueOf() * Math.random()) + '';
           this.setDataValue('password', crypt.encryptPassword(password, this.salt));
         }
       },
@@ -27,4 +27,10 @@ module.exports = function (sequelize, DataTypes) {
       }
         
     });
+
+  User.prototype.verifyPassword = function (password) {
+    return crypt.encryptPassword(password, this.salt) === this.password;
+  };
+
+  return User;
 };
