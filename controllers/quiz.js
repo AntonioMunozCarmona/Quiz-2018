@@ -8,7 +8,12 @@ const paginate = require('../helpers/paginate').paginate;
 // De esta forma se busca el quiz y se autocarga
 // Para simplificar el resto de controladores
 exports.load = (req, res, next, quizId) => {
-  models.quiz.findById(Number(quizId), {include: [models.tip] })
+  models.quiz.findById(Number(quizId), {
+    include: [
+      models.tip,
+      {model: models.user, as: 'author'}
+    ]
+  })
     .then( quiz => {
       if ( quiz ) {
         req.quiz = quiz;
@@ -51,7 +56,8 @@ exports.index = (req, res, next) => {
       const findOptions = {
         ...countOptions,
         offset: itemsPerPage * (pageno - 1),
-        limit: itemsPerPage
+        limit: itemsPerPage,
+        include: [{ model: models.user, as: 'author'}]
       };
       return models.quiz.findAll(findOptions);
 
@@ -87,13 +93,16 @@ exports.new = (req, res, next) => {
 exports.create = (req, res, next) => {
 
   const {question, answer} = req.body;
+  const authorId = req.session.user && req.session.user.id || 0;
+
   const quiz = models.quiz.build({
     question,
-    answer
+    answer,
+    authorId
   });
 
   // Salva solo los campos question y answer en la BBDD
-  quiz.save({fields: ['question', 'answer']})
+  quiz.save({fields: ['question', 'answer', 'authorId']})
     .then( quiz => {
       req.flash('success', 'Quiz creado satisfactoriamente');
       res.redirect(`/quizzes/${quiz.id}`);
