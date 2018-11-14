@@ -165,7 +165,7 @@ exports.destroy = (req, res, next) => {
   req.quiz.destroy()
     .then(() => {
       req.flash('success', 'Quiz borrado satisfactoriamente');
-      res.redirect('/quizzes');
+      res.redirect('/goback');
     })
     .catch(error => {
       req.flash('Error', `Error borrando el Quiz ${error.message}`);

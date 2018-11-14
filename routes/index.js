@@ -9,6 +9,21 @@ const sessionController = require('../controllers/session');
 /* Auto logout */
 router.all('*', sessionController.deleteExpiredUserSession);
 
+// Rutas de /goBack
+function redirectBack ( req, res, next) {  // redirecciona a backURL
+  const url = req.session.backURL || '/';
+  delete req.session.backURL;
+  res.redirect(url);
+}
+router.get('/goback', redirectBack);
+
+function saveBack ( req, res, next) {  // Salva la URL desde la que venimos
+  req.session.backURL = req.url;
+  next();
+}
+router.get(['/', '/author', '/users', '/users/:id(\\d+)/quizzes', '/quizzes'], saveBack);
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Quiz' });

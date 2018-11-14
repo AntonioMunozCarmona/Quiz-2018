@@ -152,7 +152,7 @@ exports.destroy = (req, res, next) => {
         delete req.session.user;
       }
       req.flash('success', 'User deleted successfully.');
-      res.redirect('/');
+      res.redirect('/goback');
     })
     .catch(error => next(error));
 };
