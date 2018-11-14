@@ -39,6 +39,10 @@ router.get('/users/:userId(\\d+)/edit', userController.edit);
 router.put('/users/:userId(\\d+)', userController.update);
 router.delete('/users/:userId(\\d+)', userController.destroy);
 
+// Ruta para el recurso /users/:userId/quizzes => Relación 1 a N (Todos 
+// los quizzes de un usuario)
+router.get('/users/:userId(\\d+)/quizzes', quizController.index);
+
 // Routes for the resource /quizzes
 router.get('/quizzes', quizController.index);
 router.get('/quizzes/:quizId(\\d+)', quizController.show);

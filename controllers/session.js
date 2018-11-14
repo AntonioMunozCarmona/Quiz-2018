@@ -49,6 +49,8 @@ exports.create = ( req, res, next ) => {
 
   authenticate(login, password)
     .then( user => {
+      console.log('user', user);
+      
       if ( user ) {   // La existencia de req.session.user indica que la session existe
         req.session.user = {
           id: user.id,
@@ -57,9 +59,9 @@ exports.create = ( req, res, next ) => {
         };
         res.redirect(redir);
       } else {
-        req.flash('error', 'Authentication has failed. Retry it again');
-        res.render('session/new', {redir} );
-      }
+        req.flash('error', 'Authentication has failed. Retry it again.');
+        res.render('session/new', {redir});
+    }
     })
     .catch( error => {
       req.flash('error', `An error has ocurred: ${error}`);

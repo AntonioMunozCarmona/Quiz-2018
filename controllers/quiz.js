@@ -28,7 +28,8 @@ exports.load = (req, res, next, quizId) => {
 // GET /quizzes
 exports.index = (req, res, next) => {
 
-  let countOptions = {};
+  let countOptions = { where: {} };
+  let title = 'Questions';
 
   // Busqueda
   const search = req.query.search || '';
@@ -37,6 +38,11 @@ exports.index = (req, res, next) => {
     const search_like ="%" + search.replace(/ +/g,"%") + "%";
 
     countOptions.where = {question: { [Op.like]: search_like }};
+  }
+
+  if ( req.user ) {   // req.user se crea por autoload si /user/:userId/quizzes
+    countOptions.where.authorId = req.user.id;
+    title = `Questions of ${req.user.username}:`;
   }
 
   models.quiz.count(countOptions)
@@ -65,7 +71,8 @@ exports.index = (req, res, next) => {
     .then(quizzes => {
       res.render('quizzes/index.ejs', { 
         quizzes,
-        search
+        search,
+        title
       });
     })
     .catch(error => next(error));
@@ -161,7 +168,7 @@ exports.destroy = (req, res, next) => {
       res.redirect('/quizzes');
     })
     .catch(error => {
-      req.flash('Error', `Error borrando el Quiz &{error.message}`);
+      req.flash('Error', `Error borrando el Quiz ${error.message}`);
       next(error);
     });
 };
