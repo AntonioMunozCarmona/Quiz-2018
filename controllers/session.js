@@ -29,6 +29,16 @@ exports.deleteExpiredUserSession = ( req, res, next) => {
   next();
 };
 
+// Login requerído para algunas rutas
+exports.loginRequired = (req, res, next) => {
+  if (req.session.user) {
+    next()
+  } else {
+    res.redirect('/session?redir='+ (req.param('redir') || req.url ));
+    // Guarda en un parametro oculto la direccion donde estaba intentando acceder
+  }
+};
+
 // GET /session => Login form
 exports.new = ( req, res, next) => {
   let redir = req.query.redir || url.parse(req.headers.referer || '/').path;

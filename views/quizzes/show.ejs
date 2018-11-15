@@ -10,7 +10,10 @@
 
 <h1>Tips</h1>
 
-<% include ../tips/new %>
+<!-- Si está logueado dejará crear nuevos tips -->
+<% if ( session.user ) { %>
+    <% include ../tips/new %>
+<% } %>
 
 <% var tips = quiz.tips %>
 
